@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
-require 'language_select/version'
+require 'rails_language_select/version'
 
 Gem::Specification.new do |s|
   s.name = "rails_language_select"
