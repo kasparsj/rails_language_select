@@ -77,3 +77,18 @@ end
 ```ruby
 language_select("user", "language", format: :with_alpha2)
 ```
+
+#### Getting the Language Name from the iso-389 gem
+
+```ruby
+class User < ActiveRecord::Base
+
+  # Assuming language_select is used with User attribute `language_code`
+  # This will return the english language name
+  def language_name
+    language = ISO369.find(language_code)
+    language.english_name
+  end
+
+end
+```
