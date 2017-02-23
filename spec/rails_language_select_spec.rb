@@ -3,9 +3,9 @@
 require 'spec_helper'
 
 require 'action_view'
-require 'language_select'
+require 'rails_language_select'
 
-describe "LanguageSelect" do
+describe "RailsLanguageSelect" do
   include ActionView::Helpers::TagHelper
   include ActionView::Helpers::FormOptionsHelper
 
