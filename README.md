@@ -4,7 +4,7 @@ Provides a simple helper to get an HTML select list of languages using the ISO 3
 
 Based on the code of https://github.com/stefanpenner/country_select
 
-Uses language data from https://github.com/alphabetum/iso-639
+Uses language data from https://github.com/grosser/i18n_data
 
 ## Installation
 
@@ -30,25 +30,25 @@ language_select("user", "language")
 Supplying priority countries to be placed at the top of the list:
 
 ```ruby
-language_select("user", "language", priority_countries: ["en", "fr", "de"])
+language_select("user", "language", priority_countries: ["EN", "FR", "DE"])
 ```
 
 Supplying only certain languages:
 
 ```ruby
-language_select("user", "language", only: ["en", "fr", "de"])
+language_select("user", "language", only: ["EN", "FR", "DR"])
 ```
 
 Discarding certain languages:
 
 ```ruby
-language_select("user", "language", except: ["en", "fr", "de"])
+language_select("user", "language", except: ["EN", "FR", "DE"])
 ```
 
 Pre-selecting a particular language:
 
 ```ruby
-language_select("user", "language", selected: "en")
+language_select("user", "language", selected: "EN")
 ```
 
 Using existing `select` options:
@@ -60,34 +60,33 @@ language_select("user", "language", { include_blank: 'Select a language' }, { cl
 Supplying additional html options:
 
 ```ruby
-language_select("user", "language", { priority_languages: ["en", "fr"], selected: "en" }, { class: 'form-control', data: { attribute: "value" } })
+language_select("user", "language", { priority_languages: ["EN", "FR"], selected: "EN" }, { class: 'form-control', data: { attribute: "value" } })
 ```
 
 ### Using a custom formatter
 
-You can define a custom formatter which will receive an
-[`ISO-369`](https://github.com/alphabetum/iso-639/blob/master/lib/iso-639.rb)
+You can define a custom formatter which will receive `language` (localised language name) and `code`
 ```ruby
 # config/initializers/language_select.rb
-LanguageSelect::FORMATS[:with_alpha2] = lambda do |language|
-  "#{language.name} (#{language.alpha2})"
+LanguageSelect::FORMATS[:with_code] = lambda do |language, code|
+  "#{language} (#{code})"
 end
 ```
 
 ```ruby
-language_select("user", "language", format: :with_alpha2)
+language_select("user", "language", format: :with_code)
 ```
 
-#### Getting the Language Name from the iso-389 gem
+#### Getting the Language Name from the I18nData gem
 
 ```ruby
 class User < ActiveRecord::Base
 
   # Assuming language_select is used with User attribute `language_code`
-  # This will return the english language name
+  # This will attempt to translate the language name and use the default
+  # (usually English) name if no translation is available
   def language_name
-    language = ISO369.find(language_code)
-    language.english_name
+    I18nData.languages(I18n.locale.to_s)[language_code]
   end
 
 end
