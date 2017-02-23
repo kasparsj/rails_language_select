@@ -167,7 +167,7 @@ describe "RailsLanguageSelect" do
 
       expect do
         builder.language_select(:language_code, language_names)
-      end.to raise_error(LanguageSelect::LanguageNotFoundError, error_msg)
+      end.to raise_error(RailsLanguageSelect::LanguageNotFoundError, error_msg)
     end
 
     it "supports the select prompt" do
@@ -191,7 +191,7 @@ describe "RailsLanguageSelect" do
 
   describe "custom formats" do
     it "accepts a custom formatter" do
-      ::LanguageSelect::FORMATS[:with_code] = lambda do |language, code|
+      ::RailsLanguageSelect::FORMATS[:with_code] = lambda do |language, code|
         "#{language} (#{code})"
       end
 

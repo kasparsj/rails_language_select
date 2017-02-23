@@ -15,13 +15,13 @@ module ActionView
 
     module FormOptionsHelper
       def language_select(object, method, options = {}, html_options = {})
-        Tags::LanguageSelect.new(object, method, self, options, html_options).render
+        Tags::RailsLanguageSelect.new(object, method, self, options, html_options).render
       end
     end
 
     module Tags
-      class LanguageSelect < Base
-        include ::LanguageSelect::TagHelper
+      class RailsLanguageSelect < Base
+        include ::RailsLanguageSelect::TagHelper
 
         def initialize(object_name, method_name, template_object, options, html_options)
           @html_options = html_options

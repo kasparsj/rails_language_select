@@ -1,4 +1,4 @@
-module LanguageSelect
+module RailsLanguageSelect
   class LanguageNotFoundError < StandardError;end
   module TagHelper
     def language_option_tags
@@ -77,7 +77,7 @@ module LanguageSelect
             raise LanguageNotFoundError.new(msg)
           end
 
-          formatted_language = ::LanguageSelect::FORMATS[format].call(language, code)
+          formatted_language = ::RailsLanguageSelect::FORMATS[format].call(language, code)
 
           if formatted_language.is_a?(Array)
             formatted_language

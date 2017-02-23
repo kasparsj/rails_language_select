@@ -68,10 +68,10 @@ language_select("user", "language", { priority_languages: ["EN", "FR"], selected
 You can override the default formatter, or define a new custom formatter which will receive `language` (localised language name) and `code`
 ```ruby
 # config/initializers/language_select.rb
-LanguageSelect::FORMATS[:default] = lambda do |language, code|
+RailsLanguageSelect::FORMATS[:default] = lambda do |language, code|
   [language, code.downcase] # use lower case code instead of upper case
 end
-LanguageSelect::FORMATS[:with_code] = lambda do |language, code|
+RailsLanguageSelect::FORMATS[:with_code] = lambda do |language, code|
   "#{language} (#{code})"
 end
 ```

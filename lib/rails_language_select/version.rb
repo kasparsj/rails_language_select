@@ -1,3 +1,3 @@
-module LanguageSelect
-  VERSION = "0.1.1"
+module RailsLanguageSelect
+  VERSION = "0.1.2"
 end

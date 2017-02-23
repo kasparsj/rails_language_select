@@ -1,4 +1,4 @@
-module LanguageSelect
+module RailsLanguageSelect
   FORMATS = {}
 
   FORMATS[:default] = lambda do |language, code|

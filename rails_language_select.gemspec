@@ -4,7 +4,7 @@ require 'rails_language_select/version'
 
 Gem::Specification.new do |s|
   s.name = "rails_language_select"
-  s.version = LanguageSelect::VERSION
+  s.version = RailsLanguageSelect::VERSION
   s.licenses = ["MIT"]
   s.authors = ["Kaspars Jaudzems"]
   s.email = ["kasparsj@gmail.com"]
