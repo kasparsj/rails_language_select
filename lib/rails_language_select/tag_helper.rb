@@ -8,7 +8,7 @@ module RailsLanguageSelect
       }
 
       if priority_languages.present?
-        priority_languages_options = language_options_for(priority_languages, false)
+        priority_languages_options = language_options_for(priority_languages.uniq, false)
 
         option_tags = options_for_select(priority_languages_options, option_tags_options)
         option_tags += html_safe_newline + options_for_select([priority_languages_divider], disabled: priority_languages_divider)
@@ -28,7 +28,7 @@ module RailsLanguageSelect
     end
 
     def priority_languages
-      @options[:priority_languages].uniq
+      @options[:priority_languages]
     end
 
     def priority_languages_divider
