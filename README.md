@@ -1,4 +1,4 @@
-# Rails - Language Select
+# Rails Language Select
 
 Provides a simple helper to get an HTML select list of languages using the ISO 369 standard.
 
@@ -11,12 +11,12 @@ Uses language data from https://github.com/alphabetum/iso-639
 Install as a gem using
 
 ```shell
-gem install language_select
+gem install rails_language_select
 ```
 Or put the following in your Gemfile
 
 ```ruby
-gem 'language_select'
+gem 'rails_language_select'
 ```
 
 ## Usage

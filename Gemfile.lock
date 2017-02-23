@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    language_select (0.1.0)
+    rails_language_select (0.1.0)
       i18n_data (~> 0.7.0)
       sort_alphabetical (~> 1.0)
 
@@ -279,10 +279,10 @@ PLATFORMS
 
 DEPENDENCIES
   actionpack (~> 3)
-  language_select!
   pry (~> 0)
   psych
   racc
+  rails_language_select!
   rake
   rspec (~> 3)
   rubysl (~> 2.0)

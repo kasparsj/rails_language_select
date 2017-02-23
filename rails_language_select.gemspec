@@ -3,7 +3,7 @@ $:.push File.expand_path('../lib', __FILE__)
 require 'language_select/version'
 
 Gem::Specification.new do |s|
-  s.name = "language_select"
+  s.name = "rails_language_select"
   s.version = LanguageSelect::VERSION
   s.licenses = ["MIT"]
   s.authors = ["Kaspars Jaudzems"]
@@ -11,8 +11,6 @@ Gem::Specification.new do |s|
   s.homepage = ""
   s.summary = ""
   s.description = ""
-
-  s.rubyforge_project = 'language_select'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
