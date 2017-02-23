@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email = ["kasparsj@gmail.com"]
   s.homepage = "https://github.com/kasparsj/rails_language_select"
   s.summary = "Helper for displaying a localised <select> of languages"
-  s.description = "Helper for displaying a localised <select> of languages using the ISO 369 standard."
+  s.description = "Helper for displaying a localised <select> of languages using the ISO 369 standard or your own custom data source."
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'actionpack', '~> 3'
   s.add_development_dependency 'pry', '~> 0'
+  s.add_development_dependency 'pry-nav'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'wwtd'

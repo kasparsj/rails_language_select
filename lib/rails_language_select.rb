@@ -4,6 +4,7 @@ require 'i18n_data'
 require 'sort_alphabetical'
 
 require 'rails_language_select/version'
+require 'rails_language_select/data_source'
 require 'rails_language_select/formats'
 require 'rails_language_select/tag_helper'
 

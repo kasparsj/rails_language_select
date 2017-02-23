@@ -147,7 +147,7 @@ describe "RailsLanguageSelect" do
     it "supports the language names as provided by default in Formtastic" do
       tag = options_for_select([
                                    ["Dzongkha", "DZ"],
-                                   ["Spanish", "ES"],
+                                   ["Spanish; Castilian", "ES"],
                                    ["Danish", "DA"],
                                    ["English", "EN"]
                                ])
@@ -199,6 +199,29 @@ describe "RailsLanguageSelect" do
 
       walrus.language_code = 'EN'
       t = builder.language_select(:language_code, format: :with_code)
+      expect(t).to include(tag)
+    end
+  end
+
+  describe "custom data source" do
+    it "accepts a custom data source" do
+      ::RailsLanguageSelect::DATA_SOURCE[:custom_data] = lambda do |code_or_name = nil|
+        custom_data = {yay: "YAY!", wii: 'Yippii!'}
+        if code_or_name.nil?
+          custom_data.keys
+        else
+          if (language = custom_data[code_or_name])
+            code = code_or_name
+          elsif (code = custom_data.key(code_or_name))
+            language = code_or_name
+          end
+          return language, code
+        end
+      end
+
+      tag = options_for_select([['YAY!', 'yay'], ['Yippii!', 'wii']], 'wii')
+      walrus.language_code = 'wii'
+      t = builder.language_select(:language_code, data_source: :custom_data)
       expect(t).to include(tag)
     end
   end

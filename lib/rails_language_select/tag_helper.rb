@@ -47,12 +47,16 @@ module RailsLanguageSelect
       @options[:format] || :default
     end
 
+    def data_source
+      @options[:data_source] || :default
+    end
+
     def language_options
       language_options_for(all_language_codes, true)
     end
 
     def all_language_codes
-      codes = I18nData.languages.keys
+      codes = ::RailsLanguageSelect::DATA_SOURCE[data_source].call
 
       if only_language_codes.present?
         codes & only_language_codes.map{|code| code.to_s.upcase}
@@ -66,11 +70,7 @@ module RailsLanguageSelect
     def language_options_for(language_codes, sorted=true)
       I18n.with_locale(locale) do
         language_list = language_codes.map do |code_or_name|
-          if language = I18nData.languages(I18n.locale.to_s)[code_or_name.to_s.upcase]
-            code = code_or_name
-          elsif code = I18nData.language_code(code_or_name)
-            language = code_or_name
-          end
+          language, code = ::RailsLanguageSelect::DATA_SOURCE[data_source].call(code_or_name)
 
           unless language.present?
             msg = "Could not find Language with string '#{code_or_name}'"

@@ -1,10 +1,10 @@
 # Rails Language Select
 
-Provides a simple helper to get a localised `<select>` of languages using the ISO 369 standard.
+Helper for displaying a localised `<select>` of languages using the ISO 369 standard or your own custom data source.
 
-Based on the code of https://github.com/stefanpenner/country_select
+Based on the code of: https://github.com/stefanpenner/country_select
 
-Uses language data from https://github.com/grosser/i18n_data
+By default uses language data from: https://github.com/grosser/i18n_data
 
 ## Installation
 
@@ -63,14 +63,59 @@ Supplying additional html options:
 language_select("user", "language", { priority_languages: ["EN", "FR"], selected: "EN" }, { class: 'form-control', data: { attribute: "value" } })
 ```
 
+### Using a custom data source
+
+You can override the default data source, or define a new custom data source which will receive `code_or_name`
+```ruby
+# config/initializers/language_select.rb
+
+# example overriding default data source
+RailsLanguageSelect::DATA_SOURCE[:default] = lambda do |code_or_name|
+  languages = I18nData.languages(I18n.locale.to_s).slice("EN", "FR", "ES")
+  if code_or_name.nil?
+    languages.keys
+  else
+    if (language = languages[code_or_name.to_s.upcase])
+      code = code_or_name
+    elsif (code = I18nData.language_code(code_or_name))
+      language = languages[code]
+    end
+    return language, code
+  end
+end
+
+# example defining a new custom data source
+RailsLanguageSelect::DATA_SOURCE[:custom_data] = lambda do |code_or_name|
+  custom_data = {yay: "YAY!", wii: 'Yippii!'}
+  if code_or_name.nil?
+    custom_data.keys
+  else
+    if (language = custom_data[code_or_name])
+      code = code_or_name
+    elsif (code = custom_data.key(code_or_name))
+      language = code_or_name
+    end
+    return language, code
+  end
+end
+```
+
+```ruby
+language_select("user", "language", data_source: :custom_data)
+```
+
 ### Using a custom formatter
 
 You can override the default formatter, or define a new custom formatter which will receive `language` (localised language name) and `code`
 ```ruby
 # config/initializers/language_select.rb
+
+# example overriding default formatter
 RailsLanguageSelect::FORMATS[:default] = lambda do |language, code|
   [language, code.downcase] # use lower case code instead of upper case
 end
+
+# example defining a new custom formatter
 RailsLanguageSelect::FORMATS[:with_code] = lambda do |language, code|
   "#{language} (#{code})"
 end
