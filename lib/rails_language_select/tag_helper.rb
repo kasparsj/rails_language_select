@@ -28,7 +28,7 @@ module RailsLanguageSelect
     end
 
     def priority_languages
-      @options[:priority_languages]
+      @options[:priority_languages].uniq
     end
 
     def priority_languages_divider
