@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'pry-nav'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3'
-  s.add_development_dependency 'wwtd'
 
   s.add_dependency 'i18n_data', '~> 0.7.0'
   s.add_dependency 'sort_alphabetical', '~> 1.0'
