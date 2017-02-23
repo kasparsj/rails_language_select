@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.authors = ["Kaspars Jaudzems"]
   s.email = ["kasparsj@gmail.com"]
-  s.homepage = ""
-  s.summary = ""
-  s.description = ""
+  s.homepage = "https://github.com/kasparsj/rails_language_select"
+  s.summary = "Helper for displaying a localised <select> of languages"
+  s.description = "Helper for displaying a localised <select> of languages using the ISO 369 standard."
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
