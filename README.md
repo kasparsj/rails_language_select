@@ -6,6 +6,33 @@ Based on the code of https://github.com/stefanpenner/country_select
 
 Uses language data from https://github.com/alphabetum/iso-639
 
+## Installation
+
+Install as a gem using
+
+```shell
+gem install language_select
+```
+Or put the following in your Gemfile
+
+```ruby
+gem 'language_select'
+```
+
+## Usage
+
+Simple use supplying model and attribute as parameters:
+
+```ruby
+country_select("user", "language")
+```
+
+Supplying priority countries to be placed at the top of the list:
+
+```ruby
+country_select("user", "language", priority_countries: ["en", "fr", "de"])
+```
+
 Supplying only certain languages:
 
 ```ruby
