@@ -52,43 +52,45 @@ module LanguageSelect
     end
 
     def all_language_codes
-      codes = ISO_639::ISO_639_1.map{|lang| lang[2]}
+      codes = I18nData.languages.keys
 
       if only_language_codes.present?
-        codes & only_language_codes
+        codes & only_language_codes.map{|code| code.to_s.upcase}
       elsif except_language_codes.present?
-        codes - except_language_codes
+        codes - except_language_codes.map{|code| code.to_s.upcase}
       else
         codes
       end
     end
 
     def language_options_for(language_codes, sorted=true)
-      language_list = language_codes.map do |code_or_name|
-        if language = ISO_639.find_by_code(code_or_name)
-          code = code_or_name
-        elsif language = ISO_639.find_by_english_name(code_or_name) || language = ISO_639.find_by_french_name(code_or_name)
-          code = language.alpha2
+      I18n.with_locale(locale) do
+        language_list = language_codes.map do |code_or_name|
+          if language = I18nData.languages(I18n.locale.to_s)[code_or_name.to_s.upcase]
+            code = code_or_name
+          elsif code = I18nData.language_code(code_or_name)
+            language = code_or_name
+          end
+
+          unless language.present?
+            msg = "Could not find Language with string '#{code_or_name}'"
+            raise LanguageNotFoundError.new(msg)
+          end
+
+          formatted_language = ::LanguageSelect::FORMATS[format].call(language, code)
+
+          if formatted_language.is_a?(Array)
+            formatted_language
+          else
+            [formatted_language, code]
+          end
         end
 
-        unless language.present?
-          msg = "Could not find Language with string '#{code_or_name}'"
-          raise LanguageNotFoundError.new(msg)
-        end
-
-        formatted_country = ::LanguageSelect::FORMATS[format].call(language)
-
-        if formatted_country.is_a?(Array)
-          formatted_country
+        if sorted
+          language_list.sort_alphabetical
         else
-          [formatted_country, code]
+          language_list
         end
-      end
-
-      if sorted
-        language_list.sort_alphabetical
-      else
-        language_list
       end
     end
 

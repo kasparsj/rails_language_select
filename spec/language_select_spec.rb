@@ -36,35 +36,61 @@ describe "LanguageSelect" do
   end
 
   it "selects the value of language_code" do
-    tag = options_for_select([['English', 'en']], 'en')
+    tag = options_for_select([['English', 'EN']], 'EN')
 
-    walrus.language_code = 'en'
+    walrus.language_code = 'EN'
     t = builder.language_select(:language_code)
+    expect(t).to include(tag)
+  end
+
+  it "uses the locale specified by I18n.locale" do
+    I18n.available_locales = [:en, :es]
+
+    tag = options_for_select([['Inglés', 'EN']], 'EN')
+
+    walrus.language_code = 'EN'
+    original_locale = I18n.locale
+    begin
+      I18n.locale = :es
+      t = builder.language_select(:language_code)
+      expect(t).to include(tag)
+    ensure
+      I18n.locale = original_locale
+    end
+  end
+
+  it "accepts a locale option" do
+    I18n.available_locales = [:fr]
+
+    tag = options_for_select([['anglais', 'EN']], 'EN')
+
+    walrus.language_code = 'EN'
+    t = builder.language_select(:language_code, locale: :fr)
     expect(t).to include(tag)
   end
 
   it "accepts priority languages" do
     tag = options_for_select(
         [
-            ['Latvian','lv'],
-            ['English','en'],
-            ['Danish', 'da'],
+            ['Latvian','LV'],
+            ['English','EN'],
+            ['Danish', 'DA'],
             ['-'*15,'-'*15]
         ],
-        selected: 'en',
+        selected: 'EN',
         disabled: '-'*15
     )
 
-    walrus.language_code = 'en'
-    t = builder.language_select(:language_code, priority_languages: ['lv','en','da'])
+    walrus.language_code = 'EN'
+    t = builder.language_select(:language_code, priority_languages: ['LV','EN','DA'])
     expect(t).to include(tag)
   end
 
   describe "when selected options is not an array" do
     it "selects only the first matching option" do
-      tag = options_for_select([["English", "en"],["Uruguay", "UY"]], "en")
-      walrus.language_code = 'en'
-      t = builder.language_select(:language_code, priority_languages: ['lv','en'])
+      tag = options_for_select([["English", "EN"],["Uruguay", "UY"]], "EN")
+      walrus.language_code = 'EN'
+      t = builder.language_select(:language_code, priority_languages: ['LV','EN'])
       expect(t).to_not include(tag)
     end
   end
@@ -72,24 +98,24 @@ describe "LanguageSelect" do
   describe "when selected options is an array" do
     it "selects all options but only once" do
       walrus.language_code = 'en'
-      t = builder.language_select(:language_code, {priority_languages: ['lv','en','es'], selected: ['zu', 'en']}, multiple: true)
-      expect(t.scan(options_for_select([["English", "en"]], "en")).length).to be(1)
-      expect(t.scan(options_for_select([["Zulu", "zu"]], "zu")).length).to be(1)
+      t = builder.language_select(:language_code, {priority_languages: ['LV','EN','ES'], selected: ['ZU', 'EN']}, multiple: true)
+      expect(t.scan(options_for_select([["English", "EN"]], "EN")).length).to be(1)
+      expect(t.scan(options_for_select([["Zulu", "ZU"]], "ZU")).length).to be(1)
     end
   end
 
   it "displays only the chosen languages" do
-    options = [["Danish", "da"],["German", "de"]]
+    options = [["Danish", "DA"],["German", "DE"]]
     tag = builder.select(:language_code, options)
     walrus.language_code = 'en'
-    t = builder.language_select(:language_code, only: ['da','de'])
+    t = builder.language_select(:language_code, only: ['DA','DE'])
     expect(t).to eql(tag)
   end
 
   it "discards some languages" do
-    tag = options_for_select([["English", "en"]])
+    tag = options_for_select([["English", "EN"]])
     walrus.language_code = 'de'
-    t = builder.language_select(:language_code, except: ['en'])
+    t = builder.language_select(:language_code, except: ['EN'])
     expect(t).to_not include(tag)
   end
 
@@ -97,35 +123,35 @@ describe "LanguageSelect" do
     it "accepts priority languages" do
       tag = options_for_select(
           [
-              ['Latvian','lv'],
-              ['English','en'],
-              ['Danish', 'da'],
+              ['Latvian','LV'],
+              ['English','EN'],
+              ['Danish', 'DA'],
               ['-'*15,'-'*15]
           ],
-          selected: 'en',
+          selected: 'EN',
           disabled: '-'*15
       )
 
-      walrus.language_code = 'en'
-      t = builder.language_select(:language_code, ['lv','en','da'])
+      walrus.language_code = 'EN'
+      t = builder.language_select(:language_code, ['LV','EN','DA'])
       expect(t).to include(tag)
     end
 
     it "selects only the first matching option" do
-      tag = options_for_select([["English", "en"],["Uruguay", "UY"]], "en")
-      walrus.language_code = 'en'
-      t = builder.language_select(:language_code, ['lv','en'])
+      tag = options_for_select([["English", "EN"],["Uruguay", "UY"]], "EN")
+      walrus.language_code = 'EN'
+      t = builder.language_select(:language_code, ['LV','EN'])
       expect(t).to_not include(tag)
     end
 
     it "supports the language names as provided by default in Formtastic" do
       tag = options_for_select([
-                                   ["Dzongkha", "dz"],
-                                   ["Spanish; Castilian", "es"],
-                                   ["Danish", "da"],
-                                   ["English", "en"]
+                                   ["Dzongkha", "DZ"],
+                                   ["Spanish", "ES"],
+                                   ["Danish", "DA"],
+                                   ["English", "EN"]
                                ])
-      language_names = ["Dzongkha", "Spanish; Castilian", "Danish", "English"]
+      language_names = ["Dzongkha", "Spanish", "Danish", "English"]
       t = builder.language_select(:language_code, language_names)
       expect(t).to include(tag)
     end
@@ -133,9 +159,7 @@ describe "LanguageSelect" do
     it "raises an error when a language code or name is not found" do
       language_names = [
           "English",
-          "Elamite",
-          "Ekajuk",
-          "Spanish; Castilian",
+          "Spanish",
           "Danish",
           "Freedonia"
       ]
@@ -160,55 +184,22 @@ describe "LanguageSelect" do
   end
 
   it 'sorts unicode' do
-    tag = builder.language_select(:language_code, only: ['bg', 'ca', 'ch', 'zu'])
+    tag = builder.language_select(:language_code, only: ['BG', 'CA', 'CH', 'ZU'])
     order = tag.scan(/value="(\w{2})"/).map { |o| o[0] }
-    expect(order).to eq(['bg', 'ca', 'ch', 'zu'])
+    expect(order).to eq(['BG', 'CA', 'CH', 'ZU'])
   end
 
   describe "custom formats" do
     it "accepts a custom formatter" do
-      ::LanguageSelect::FORMATS[:with_alpha2] = lambda do |language|
-        "#{language.english_name} (#{language.alpha2})"
+      ::LanguageSelect::FORMATS[:with_code] = lambda do |language, code|
+        "#{language} (#{code})"
       end
 
-      tag = options_for_select([['English (en)', 'en']], 'en')
+      tag = options_for_select([['English (EN)', 'EN']], 'EN')
 
-      walrus.language_code = 'en'
-      t = builder.language_select(:language_code, format: :with_alpha2)
+      walrus.language_code = 'EN'
+      t = builder.language_select(:language_code, format: :with_code)
       expect(t).to include(tag)
-    end
-
-    it "accepts an array for formatter" do
-      ::LanguageSelect::FORMATS[:with_alpha3] = lambda do |language|
-        [language.english_name, language.alpha3]
-      end
-
-      tag = options_for_select([['English', 'eng']], 'eng')
-      walrus.language_code = 'eng'
-      t = builder.language_select(:language_code, format: :with_alpha3)
-      expect(t).to include(tag)
-    end
-
-    it "accepts an array for formatter + custom formatter" do
-      ::LanguageSelect::FORMATS[:with_alpha3] = lambda do |language|
-        ["#{language.english_name} (#{language.alpha2})", language.alpha3]
-      end
-
-      tag = options_for_select([['English (en)', 'eng']], 'eng')
-      walrus.language_code = 'eng'
-      t = builder.language_select(:language_code, format: :with_alpha3)
-      expect(t).to include(tag)
-    end
-
-    it "marks priority languages as selected only once" do
-      ::LanguageSelect::FORMATS[:with_alpha3] = lambda do |language|
-        [language.english_name, language.alpha3]
-      end
-
-      tag = options_for_select([['English', 'eng']], 'eng')
-      walrus.language_code = 'eng'
-      t = builder.language_select(:language_code, format: :with_alpha3, priority_languages: ['en'])
-      expect(t.scan(Regexp.new(Regexp.escape(tag))).size).to eq 1
     end
   end
 end

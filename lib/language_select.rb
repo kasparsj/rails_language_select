@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'iso-639'
+require 'i18n_data'
 require 'sort_alphabetical'
 
 require 'language_select/version'
