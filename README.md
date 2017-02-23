@@ -27,10 +27,10 @@ Simple use supplying model and attribute as parameters:
 language_select("user", "language")
 ```
 
-Supplying priority countries to be placed at the top of the list:
+Supplying priority languages to be placed at the top of the list:
 
 ```ruby
-language_select("user", "language", priority_countries: ["EN", "FR", "DE"])
+language_select("user", "language", priority_languages: ["EN", "FR", "DE"])
 ```
 
 Supplying only certain languages:
