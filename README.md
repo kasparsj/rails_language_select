@@ -24,13 +24,13 @@ gem 'language_select'
 Simple use supplying model and attribute as parameters:
 
 ```ruby
-country_select("user", "language")
+language_select("user", "language")
 ```
 
 Supplying priority countries to be placed at the top of the list:
 
 ```ruby
-country_select("user", "language", priority_countries: ["en", "fr", "de"])
+language_select("user", "language", priority_countries: ["en", "fr", "de"])
 ```
 
 Supplying only certain languages:
