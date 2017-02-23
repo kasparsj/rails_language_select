@@ -27,5 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 3'
   s.add_development_dependency 'wwtd'
 
+  s.add_dependency 'iso-639', '~> 0.2.8'
   s.add_dependency 'sort_alphabetical', '~> 1.0'
 end

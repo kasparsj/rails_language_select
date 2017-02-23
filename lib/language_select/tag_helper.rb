@@ -52,7 +52,7 @@ module LanguageSelect
     end
 
     def all_language_codes
-      codes = I18n.t('.')[:vendor][:iso][:languages].keys
+      codes = ISO_639::ISO_639_1.map{|lang| lang[2]}
 
       if only_language_codes.present?
         codes & only_language_codes
@@ -64,27 +64,31 @@ module LanguageSelect
     end
 
     def language_options_for(language_codes, sorted=true)
-      I18n.with_locale(locale) do
-        language_list = language_codes.map do |code_or_name|
-          if language = I18n.t("vendor.iso.languages.#{code_or_name}")
-            code = code_or_name
-          elsif code = I18n.t('.')[:vendor][:iso][:languages].key(code_or_name)
-            language = code_or_name
-          end
-
-          unless language.present?
-            msg = "Could not find Language with string '#{code_or_name}'"
-            raise LanguageNotFoundError.new(msg)
-          end
-
-          [language, code]
+      language_list = language_codes.map do |code_or_name|
+        if language = ISO_639.find_by_code(code_or_name)
+          code = code_or_name
+        elsif language = ISO_639.find_by_english_name(code_or_name) || language = ISO_639.find_by_french_name(code_or_name)
+          code = language.alpha2
         end
 
-        if sorted
-          language_list.sort_alphabetical
+        unless language.present?
+          msg = "Could not find Language with string '#{code_or_name}'"
+          raise LanguageNotFoundError.new(msg)
+        end
+
+        formatted_country = ::LanguageSelect::FORMATS[format].call(language)
+
+        if formatted_country.is_a?(Array)
+          formatted_country
         else
-          language_list
+          [formatted_country, code]
         end
+      end
+
+      if sorted
+        language_list.sort_alphabetical
+      else
+        language_list
       end
     end
 
