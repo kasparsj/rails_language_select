@@ -67,7 +67,7 @@ language_select("user", "language", { priority_languages: ["EN", "FR"], selected
 
 You can override the default data source, or define a new custom data source which will receive `code_or_name`
 ```ruby
-# config/initializers/language_select.rb
+# config/initializers/rails_language_select.rb
 
 # example overriding default data source
 RailsLanguageSelect::DATA_SOURCE[:default] = lambda do |code_or_name|
@@ -108,7 +108,7 @@ language_select("user", "language", data_source: :custom_data)
 
 You can override the default formatter, or define a new custom formatter which will receive `language` (localised language name) and `code`
 ```ruby
-# config/initializers/language_select.rb
+# config/initializers/rails_language_select.rb
 
 # example overriding default formatter
 RailsLanguageSelect::FORMATS[:default] = lambda do |language, code|
@@ -134,7 +134,7 @@ class User < ActiveRecord::Base
   # This will attempt to translate the language name and use the default
   # (usually English) name if no translation is available
   def language_name
-    I18nData.languages(I18n.locale.to_s)[language_code]
+    RailsLanguageSelect::DATA_SOURCE[:default].call(language_code)
   end
 
 end
