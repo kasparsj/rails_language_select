@@ -70,7 +70,7 @@ You can override the default data source, or define a new custom data source whi
 # config/initializers/rails_language_select.rb
 
 # example overriding default data source
-RailsLanguageSelect::DATA_SOURCE[:default] = lambda do |code_or_name|
+RailsLanguageSelect::DATA_SOURCE[:default] = lambda do |code_or_name = nil|
   languages = I18nData.languages(I18n.locale.to_s).slice("EN", "FR", "ES")
   if code_or_name.nil?
     languages.keys
@@ -85,7 +85,7 @@ RailsLanguageSelect::DATA_SOURCE[:default] = lambda do |code_or_name|
 end
 
 # example defining a new custom data source
-RailsLanguageSelect::DATA_SOURCE[:custom_data] = lambda do |code_or_name|
+RailsLanguageSelect::DATA_SOURCE[:custom_data] = lambda do |code_or_name = nil|
   custom_data = {yay: "YAY!", wii: 'Yippii!'}
   if code_or_name.nil?
     custom_data.keys
