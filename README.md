@@ -1,6 +1,6 @@
 # Rails - Language Select
 
-Provides a simple helper to get an HTML select list of languages using the ISO 369 standard.
+Provides a simple helper to get a localised `<select>` of languages using the ISO 369 standard.
 
 Based on the code of https://github.com/stefanpenner/country_select
 
