@@ -2,7 +2,7 @@
 
 Helper for displaying a localised `<select>` of languages using the ISO 369 standard or your own custom data source.
 
-If you're using SimpleForm, see: https://github.com/kasparsj/simple_form_language_input
+If you're using SimpleForm, see also: https://github.com/kasparsj/simple_form_language_input
 
 Based on the code of: https://github.com/stefanpenner/country_select
 
