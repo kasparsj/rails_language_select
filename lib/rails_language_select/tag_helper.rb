@@ -4,7 +4,8 @@ module RailsLanguageSelect
     def language_option_tags
       option_tags_options = {
           :selected => @options.fetch(:selected) { value(@object) },
-          :disabled => @options[:disabled]
+          :disabled => @options[:disabled],
+          :include_selected => @options[:include_selected]
       }
 
       if priority_languages.present?
