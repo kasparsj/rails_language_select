@@ -16,6 +16,7 @@ module RailsLanguageSelect
 
         option_tags_options[:selected] = [option_tags_options[:selected]] unless option_tags_options[:selected].kind_of?(Array)
         option_tags_options[:selected].delete_if{|selected| priority_languages_options.map(&:second).include?(selected)}
+        option_tags_options[:include_selected] = false
 
         option_tags += html_safe_newline + options_for_select(language_options, option_tags_options)
       else
